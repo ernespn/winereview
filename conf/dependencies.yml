@@ -1,0 +1,8 @@
+# Application dependencies
+
+require:
+    - play
+    - play -> scala 0.9.1
+    - play -> gae 1.4
+    - play -> siena 2.0.5
+    - play -> cobertura 2.4
