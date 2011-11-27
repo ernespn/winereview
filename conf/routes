@@ -5,6 +5,9 @@
 # Home page
 GET     /                                       Application.index
 
+#Post new drink
+POST	/postnewdrink							Application.postnewdrink
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
