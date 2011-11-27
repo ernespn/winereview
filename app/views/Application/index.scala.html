@@ -1,7 +1,15 @@
-@(title:String)
-
+@(title:String, drinks:List[model.Drink])
 @main(title) {
-    
-    @views.defaults.html.welcome(title)
-    
+	@if(!drinks.isEmpty) {
+		@for(d <- drinks) { 
+		<div>
+			<p>@d.name</p>
+			<p>Inserted date: @d.date</p>
+			<p><img alt="@d.name" src="@action(controllers.Application.getImage(d.image.id))" /></p>
+			<hr />
+		<div>
+		}
+	}else{
+		<p>Not drinks available</p>
+	}
 }
