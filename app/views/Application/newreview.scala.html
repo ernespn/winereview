@@ -1,0 +1,15 @@
+@(title:String, drink:Long, error:String)
+
+@main(title) {
+	@if(error != ""){
+		<div class="error">@error</div>
+	}
+	
+	<form method="post" action="@action(controllers.Application.postreview())" enctype="multipart/form-data" id="reviewForm"> 
+		<input type="hidden" id="reviewDrink" name="reviewDrink" value="@drink" />
+		<input type="text" id="reviewComment" name="reviewComment" />
+		<input type="file" id="reviewImage" name="reviewImage" />
+		<input type="submit" value="create review"/>
+	</form>
+	
+}

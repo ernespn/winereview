@@ -1,0 +1,39 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{selenium}
+     // Form exists
+    open('/Application/newdrink')
+    verifyElementPresent(//form[@id='drinkForm'])
+	verifyElementPresent(//form[@id='drinkForm']/input[@id='drinkName'])
+	verifyElementPresent(//form[@id='drinkForm']/input[@id='drinkImage'])
+	verifyElementPresent(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
+#{/selenium}
+
+#{selenium}
+     // Post a form  with no data return error
+    open('/Application/newdrink')
+    clickAndWait(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
+	assertTitle('Error posting a drink')
+#{/selenium}
+
+#{selenium}
+     // Post a form with name but not image return error
+    open('/Application/newdrink')
+	type("drinkName", "test");
+    clickAndWait(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
+	assertTitle('Error posting a drink')
+#{/selenium}
+
+*{*
+#{selenium}
+     // Post a form shall return posted drink
+    open('/Application/newdrink')
+	verifyElementPresent(//form[@id='drinkForm']/input[@id='drinkName'])
+	type("drinkName", "test");
+	verifyElementPresent(//form[@id='drinkForm']/input[@id='drinkImage'])
+	attachFile("drinkImage", "test/Wine.jpg");
+    clickAndWait(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
+	assertTitle('New Drink Posted')
+#{/selenium}
+*}*
+

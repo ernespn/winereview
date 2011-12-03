@@ -11,26 +11,3 @@
     open('/')
     assertTitle('Track your wine!')
 #{/selenium}
-
-#{selenium}
-    // Open the home page, and check there is not posts
-    open('/')
-    verifyTextPresent('Not drinks available')
-#{/selenium}
-
-#{selenium}
-     // Form exists
-    open('/Application/newdrink')
-    verifyElementPresent(//form[@id='drinkForm'])
-	verifyElementPresent(//form[@id='drinkForm']/input[@id='drinkName'])
-	verifyElementPresent(//form[@id='drinkForm']/input[@id='drinkImage'])
-	verifyElementPresent(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
-#{/selenium}
-
-#{selenium}
-     // Post a form 
-    open('/Application/newdrink')
-    clickAndWait(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
-	assertTitle('New Drink Posted')
-#{/selenium}
-

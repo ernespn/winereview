@@ -1,0 +1,46 @@
+*{ You can use plain selenium command using the selenium tag }*
+
+#{selenium}
+     // Form exists
+    open('/newreview/99999999999')
+	assertTitle('Add a review to a drink')
+    verifyElementPresent(//form[@id='reviewForm'])
+	verifyElementPresent(//form[@id='reviewForm']/input[@id='reviewComment'])
+	verifyElementPresent(//form[@id='reviewForm']/input[@id='reviewImage'])
+	verifyElementPresent(//form[@id='reviewForm']/input[@type='submit' and @value='create review'])
+#{/selenium}
+
+#{selenium}
+     // Post a form with no drink return an error
+    open('/newreview/99999999999')
+    clickAndWait(//form[@id='reviewForm']/input[@type='submit' and @value='create review'])
+	assertTitle('Error posting a review for the drink -> 99999999999')
+#{/selenium}
+
+#{selenium}
+     // Post a form with a invalid drink return an error
+    open('/newreview/avs')
+    clickAndWait(//form[@id='reviewForm']/input[@type='submit' and @value='create review'])
+	assertTitle('Error posting a review for the drink -> 0')
+#{/selenium}
+
+*{*
+#{selenium}
+     // Post a form with no image return 
+    open('/newreview/avs')
+	type("reviewComment", "test comment");
+    clickAndWait(//form[@id='reviewForm']/input[@type='submit' and @value='create review'])
+	assertTitle('Error posting a review for the drink -> 0')
+#{/selenium}
+
+
+#{selenium}
+     // Post a form shall return posted drink
+    open('/Application/newdrink')
+	type("drinkName", "test");
+	attach_file("drinkImage", "/public/images/Wine.jpg");
+    clickAndWait(//form[@id='drinkForm']/input[@type='submit' and @value='create drink'])
+	assertTitle('New Drink Posted')
+#{/selenium}
+}*
+

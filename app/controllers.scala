@@ -4,6 +4,7 @@ import play._
 import play.mvc._
 import views.Application._
 import model._
+import model.Rating
 import com.google.appengine.api.datastore.Blob
 import play.cache.Cache
 import play.libs.Images
@@ -30,6 +31,26 @@ object Application extends Controller {
 		}catch {
 			case e:IllegalArgumentException =>  html.newdrink("Error posting a drink", null, e.getMessage())
 		}	
+	}
+	
+	def newreview(id: Long) = {
+		html.newreview("Add a review to a drink", id, "")
+	}
+	
+	def postreview() = {
+		val drinkId = params.get("reviewDrink", classOf[Long])
+		val comment = params.get("reviewComment")
+		val image = params.get("reviewImage", classOf[Array[Byte]])
+		
+		try{
+			val drink = Drink.findById(drinkId)
+			val review = new Review(comment, new Picture(image))
+			drink.addReview(review)
+			html.newdrink("New review posted", drink, "")
+		}catch {
+			case e:IllegalArgumentException =>  html.newdrink("Error posting a review for the drink -> "+drinkId, null, e.getMessage())
+			case npe:NullPointerException 	=>	html.newdrink("Error posting a review for the drink -> "+drinkId, null, npe.getMessage())
+		}
 	}
 	
 	def getImage(id:Long) = new ByteArrayInputStream(Picture.findById(id).ImageContent.getBytes())

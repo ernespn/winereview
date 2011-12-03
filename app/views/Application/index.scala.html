@@ -1,11 +1,22 @@
 @(title:String, drinks:List[model.Drink])
+@import scala.collection.JavaConversions._
 @main(title) {
 	@if(!drinks.isEmpty) {
 		@for(d <- drinks) { 
 		<div>
-			<p>@d.name</p>
+			
+			<p>@d.name (@d.id)</p>
 			<p>Inserted date: @d.date</p>
 			<p><img alt="@d.name" src="@action(controllers.Application.getImage(d.image.id))" /></p>
+			
+			@if(d.getReviews().length != 0) {
+			<div>
+				<p>Top Comments:</p>
+				@for(c <- d.getReviews()) { 
+				<p>@c.comment</p>
+				}
+			</div>
+			}
 			<hr />
 		<div>
 		}

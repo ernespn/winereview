@@ -1,0 +1,21 @@
+@(title:String, drink:model.Drink, error:String)
+
+@main(title) {
+	@if(error != ""){
+		<div class="error">@error</div>
+	}
+	
+	<form method="post" action="@action(controllers.Application.postnewdrink())" enctype="multipart/form-data" id="drinkForm"> 
+		<input type="text" id="drinkName" name="drinkname" />
+		<input type="file" id="drinkImage" name="drinkimage" />
+		<input type="submit" value="create drink"/>
+	</form>
+	
+	
+	@if(drink != null){
+		<h1>@drink.name</h1>
+		
+		<img alt="image" src="@action(controllers.Application.getImage(drink.image.id))" />
+		
+	}
+}
