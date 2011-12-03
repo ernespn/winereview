@@ -6,4 +6,5 @@ require:
     - play -> gae 1.4
     - play -> siena 2.0.5
     - play -> cobertura 2.4
-    - play -> mockito-0.1
+    - org.powermock -> powermock-module-junit4 1.4.7: 
+       id: test 

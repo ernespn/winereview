@@ -6,7 +6,10 @@
 GET     /                                       Application.index
 
 #Post new drink
+GET		/newdrink								Application.newdrink
 POST	/postnewdrink							Application.postnewdrink
+GET		/newreview/{id}							Application.newreview
+POST	/postreview								Application.postreview
 
 # Ignore favicon requests
 GET     /favicon.ico                            404
