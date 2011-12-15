@@ -19,9 +19,6 @@ class DrinkFeature extends UnitFeatureSpec with GivenWhenThen with BeforeAndAfte
 	override def beforeEach() {
 			Model.all(classOf[Picture]).fetch().foreach(d => d.delete()) 
 			Model.all(classOf[Drink]).fetch().foreach(d => d.delete()) 
-			//val blob = mock[Array[Byte]]
-			//this.picture = new Picture(blob)
-			//this.picturetmp = mock[Picture]
 			val file = Play.getFile("test/Wine.jpg")
 			val is = new FileInputStream(file)
 			val len = file.length.toInt
@@ -29,14 +26,14 @@ class DrinkFeature extends UnitFeatureSpec with GivenWhenThen with BeforeAndAfte
 			this.picture = new Picture(bytes)
     }
 	
-	//Feature
+    //Feature
     feature("The user create a drink record") { 
     	//Story
         info("As a programmer")
 	    info("I want to be able to create new drink object")
 	    info("So I can store as much as I want")
         //Scenarios
-	    scenario("create new drinks with name and image") {
+        scenario("create new drinks with name and image") {
     	  given("name to create a new drink")
     	  val name = "nameOfDrink"
     	  and("Image to create a new drink")
@@ -227,13 +224,83 @@ class DrinkFeature extends UnitFeatureSpec with GivenWhenThen with BeforeAndAfte
 	
 	
      feature("The user can browse drinks") { 
-    	//Story
+    	
+		//Story
         info("As a programmer")
 	    info("I want to be able to browse the drink catalog")
 	    info("So I can see the latest drinks added")
-        //Scenarios
-	    scenario("create new drinks with name and image") {
-    	  (pending) 
+        
+		//Scenarios
+	    scenario("search for drink name in LOWER CASE returns the drinks with that name") {
+    	  given("inserting a drink with name drinkNotFound1")
+		   val pic = this.picture
+		  pic.insert()
+		  new Drink("drinkNotFound1", pic)
+		  and("inserting a drink with name drinkFound1")
+		  new Drink("drinkFound1", pic)
+		  and("inserting a drink with name drinkFound2")
+		  new Drink("drinkFound2", pic)
+		  and("inserting a drink with name drinkNotFound2")
+		   new Drink("drinkNotFound2", pic)
+		  when("search for drinkfound (LOWER CASE)")
+		  val drinks = Drink.Search("drinkfound")
+	      then("return a list of drinks")
+		  assert(drinks.size() === 2)
+		  and("the first element is drinkFound1")
+		  assert(drinks.get(0).name === "drinkFound1")
+		  and("the second element is drinkFound2")
+		  assert(drinks.get(1).name === "drinkFound2")
+        }
+		
+		scenario("search for name which does not exist") {
+    	  given("inserting a drink with name drinkNotFound1")
+		   val pic = this.picture
+		  pic.insert()
+		  new Drink("drinkNotFound1", pic)
+		  and("inserting a drink with name drinkFound1")
+		  new Drink("drinkFound1", pic)
+		  and("inserting a drink with name drinkFound2")
+		  new Drink("drinkFound2", pic)
+		  and("inserting a drink with name drinkNotFound2")
+		   new Drink("drinkNotFound2", pic)
+		  when("search for NotFound")
+		  val drinks = Drink.Search("NotFound")
+	      then("return a empty list of drinks")
+		  assert(drinks.size() === 0)
+        }
+		
+		scenario("search for drink with UPPER CASE doesnt work") {
+    	  given("inserting a drink with name drinkNotFound1")
+		   val pic = this.picture
+		  pic.insert()
+		  new Drink("drinkNotFound1", pic)
+		  and("inserting a drink with name drinkFound1")
+		  new Drink("drinkFound1", pic)
+		  and("inserting a drink with name drinkFound2")
+		  new Drink("drinkFound2", pic)
+		  and("inserting a drink with name drinkNotFound2")
+		   new Drink("drinkNotFound2", pic)
+		  when("search for DRINKFOUND")
+		  val drinks = Drink.Search("DRINKFOUND")
+	      then("return a list of drinks")
+		  assert(drinks.size() === 0)
+        }
+		
+		scenario("search for drink with MIXING CASE doesnt work") {
+    	  given("inserting a drink with name drinkNotFound1")
+		   val pic = this.picture
+		  pic.insert()
+		  new Drink("drinkNotFound1", pic)
+		  and("inserting a drink with name drinkFound1")
+		  new Drink("drinkFound1", pic)
+		  and("inserting a drink with name drinkFound2")
+		  new Drink("drinkFound2", pic)
+		  and("inserting a drink with name drinkNotFound2")
+		   new Drink("drinkNotFound2", pic)
+		  when("search for drinkFound")
+		  val drinks = Drink.Search("drinkFound")
+	      then("return a list of drinks")
+		  assert(drinks.size() === 0)
         }
      }
   

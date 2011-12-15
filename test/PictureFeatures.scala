@@ -38,6 +38,21 @@ class PictureFeature extends UnitFeatureSpec with GivenWhenThen with BeforeAndAf
 		  assert(retrievedPic === picture)
 
         }
+		
+		scenario("user cannot save images bigger than 1MB") {  
+		  given("an Image")
+			val file = Play.getFile("test/ImageBiggerThanAllow.jpg")
+			val is = new FileInputStream(file)
+			val len = file.length.toInt
+			val bytes = new Array[Byte](len)
+
+    	  when("create a Picture")
+		  then("the return an Illegal argument exception")
+		  intercept[IllegalArgumentException] {
+	          val picture = new Picture(bytes)
+	      }
+        }
+		
 
     }
   

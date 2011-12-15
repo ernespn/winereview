@@ -1,0 +1,11 @@
+@(d:model.Drink)
+@main(){
+	<div class="wine">
+		<div class="alert-message notice"><p>@d.name (@d.id)</p></div>
+		<p>Inserted date: @d.date</p>
+		<p><img alt="@d.name" src="@action(controllers.Application.getImage(d.image.id))" /></p>
+			
+		@displayReviews(d.getReviews.toList.asInstanceOf[List[model.Review]])
+		<hr />
+	<div>
+}

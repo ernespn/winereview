@@ -10,6 +10,8 @@ GET		/newdrink								Application.newdrink
 POST	/postnewdrink							Application.postnewdrink
 GET		/newreview/{id}							Application.newreview
 POST	/postreview								Application.postreview
+GET		/search/{search}						Application.search
+GET		/search/?								Application.search
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

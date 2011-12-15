@@ -1,0 +1,35 @@
+@(title:String, drinks:List[model.Drink], error:String)
+@import scala.collection.JavaConversions._
+@main(title) {
+	<form method="get" action="@action(controllers.Application.search())" id="drinkSearch"> 
+		<input type="text" id="search" name="search" />
+		<input type="submit" class="btn primary" value="search drink"/>
+	</form>
+	
+	@if(error != ""){
+		<div class="alert-message warning">@error</div>
+	}else{
+		@if(drinks != null && !drinks.isEmpty) {
+			@for(d <- drinks) { 
+			<div>
+				
+				<p>@d.name (@d.id)</p>
+				<p>Inserted date: @d.date</p>
+				<p><img alt="@d.name" src="@action(controllers.Application.getImage(d.image.id))" /></p>
+				
+				@if(d.getReviews().length != 0) {
+				<div>
+					<p>Top Comments:</p>
+					@for(c <- d.getReviews()) { 
+					<p>@c.comment</p>
+					}
+				</div>
+				}
+				<hr />
+			<div>
+			}
+		}else{
+			<p>No matches found</p>
+		}
+	}
+}

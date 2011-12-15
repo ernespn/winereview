@@ -72,56 +72,128 @@ class ReviewFeature extends UnitFeatureSpec with GivenWhenThen with BeforeAndAft
 	    info("So I can see how well scored is a wine")
 		
 		//Scenarios
-		scenario("the reviews has positive rating") {
-			given("a drink with a positive review")
-			//val newDrink = new Drink("drinkTestName", this.picture)
-			//val review = new Review("comment", PlusOne)
-			//newDrink.addReview(review)
+		scenario("the reviews has 5 star rating") {
+			given("a drink with a 5 star review")
+			val newDrink = new Drink("drinkTestName", this.picture)
+			val review = new Review("comment", null)
+                        review.addRating(5)
+			newDrink.addReview(review)
 			when("ask for rating")
-			
-			then("the rating returned should be positive")
-			pending
-        }
+			val lastReview = newDrink.getReviews().first
+			then("the rating returned should be 5")
+			assert(lastReview.rating === 5)
+                }
 		
-		scenario("the reviews has negative rating") {
-			given("a drink with a negative review")
+		scenario("the reviews has 0 star rating") {
+			given("a drink with a 0 star review")
+			val newDrink = new Drink("drinkTestName", this.picture)
+			val review = new Review("comment", null)
+                        review.addRating(0)
+			newDrink.addReview(review)
 			when("ask for rating")
-			then("the rating returned should be negative")
-			pending			
-        }
-		
-		scenario("the reviews has equalizer rating") {
-			given("a drink with a pse-pse review")
+			val lastReview = newDrink.getReviews().first
+			then("the rating returned should be 0")
+			assert(lastReview.rating === 0)		
+                }
+                
+                scenario("the reviews has 3 star rating") {
+			given("a drink with a 3 star review")
+			val newDrink = new Drink("drinkTestName", this.picture)
+			val review = new Review("comment", null)
+                        review.addRating(3)
+			newDrink.addReview(review)
 			when("ask for rating")
-			then("the rating returned should be 0")	
-			pending
-        }
+			val lastReview = newDrink.getReviews().first
+			then("the rating returned should be 3")
+			assert(lastReview.rating === 3)		
+                }
 		
-		scenario("the system return the average review rating") {
-			given("a drink with a pse-pse review")
-			and("adding a positive review") 
-			and("adding another positive review") 
-			and("adding a negative review") 
+		scenario("the system return the average review rating rounding up") {
+			given("a drink with a 0 review")
+                        val newDrink = new Drink("drinkTestName", this.picture)
+			val review = new Review("comment", null)
+                        newDrink.addReview(review)
+			and("adding a 5 review") 
+                        val review2 = new Review("comment", null)
+                        review2.addRating(5)
+			newDrink.addReview(review2)
+			and("adding another 4 review")
+                        val review3 = new Review("comment", null)
+                        review3.addRating(4)
+			newDrink.addReview(review3)
+			and("adding a 2 review") 
+                        val review4 = new Review("comment", null)
+                        review4.addRating(2)
+			newDrink.addReview(review4)
 			when("ask for rating")
-			then("the rating returned should be positive (2 - 1 - 1")
-			pending
-        }
+                        val avgRating = newDrink.getReviewsAverageRating()
+			then("the rating returned should be 4 rounding up 3.6")
+			assert(avgRating === 4)	
+                 }
 		
-		scenario("the system return the average review rating (negative)") {
-			given("a drink with a pse-pse review")
-			and("adding a positive review") 
-			and("adding another positive review") 
-			and("adding a negative review") 
-			and("adding a negative review") 
-			and("adding a negative review") 
+		scenario("the system return the average review rating rounding down") {
+			given("a drink with a 0 review")
+                        val newDrink = new Drink("drinkTestName", this.picture)
+			val review = new Review("comment", null)
+                        newDrink.addReview(review)
+			and("adding a 5 review") 
+                        val review2 = new Review("comment", null)
+                        review2.addRating(5)
+			newDrink.addReview(review2)
+			and("adding another 4 review")
+                        val review3 = new Review("comment", null)
+                        review3.addRating(4)
+			newDrink.addReview(review3)
+			and("adding a 2 review") 
+                        val review4 = new Review("comment", null)
+                        review4.addRating(1)
+			newDrink.addReview(review4)
 			when("ask for rating")
-			then("the rating returned should be negative (3 - 1 - 2)")	
-			pending
-        }
-		
-		
-	
-	}
+                        val avgRating = newDrink.getReviewsAverageRating()
+			then("the rating returned should be 3 rounding down 3.3")
+			assert(avgRating === 3)	
+                 }
+        
+                 scenario("review doesnt have any rating return -1") {
+	                given("a drink with a 1 review and no rating")
+                        val newDrink = new Drink("drinkTestName", this.picture)
+			val review = new Review("comment", null)
+                        newDrink.addReview(review)
+	        	when("ask for rating")
+                        val avgRating = newDrink.getReviewsAverageRating()
+                        then("the rating returned should be -1")
+                        assert(avgRating === -1)	
+	        }
+
+                 scenario("drink doesnt have any review return -1") {
+			given("a drink with a 0 review")
+                        val newDrink = new Drink("drinkTestName", this.picture)
+	        	when("ask for rating")
+                        val avgRating = newDrink.getReviewsAverageRating()
+                        then("the rating returned should be -1")
+                        assert(avgRating === -1)	
+	        }
+
+                scenario("review with rating -1 return exception") {
+			given("a review")
+                        val review = new Review("comment", null)
+	                when("add -1 rating")
+                        then("it should return an IllegalArgumentException")
+                        intercept[IllegalArgumentException] {
+	                       review.addRating(-1)
+	                }	
+	        }
+
+                scenario("review with rating 6 return exception") {
+			given("a review")
+                        val review = new Review("comment", null)
+	                when("add 6 rating")
+                        then("it should return an IllegalArgumentException")
+                        intercept[IllegalArgumentException] {
+	                       review.addRating(6)
+	                }	
+	        }
+         }       
 	
 	feature("The user can add images to the reviews"){
 		//Story
@@ -140,6 +212,17 @@ class ReviewFeature extends UnitFeatureSpec with GivenWhenThen with BeforeAndAft
 			then("the image is attached to the review")	
 			val retrievedImage = Picture.findById(review.image.id)
 			assert(retrievedImage === review.image)  
+        }
+		
+		scenario("the reviews can have no images") {
+			given("a drink")
+			val newDrink = new Drink("drinkTestName", this.picture)
+			when("add a review with a image")
+			val review = new Review("comment", null)
+			newDrink.addReview(review)
+			then("the review is created correctly")	
+			val lastReview = newDrink.getReviews().first
+			assert(lastReview.id === review.id)  
         }
 
 	}

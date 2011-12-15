@@ -1,0 +1,11 @@
+@(reviews:List[model.Review])
+@main(){
+	@if(reviews.length != 0) {
+		<div class="comment">
+			<div class="alert-message warning"><p>Top Comments:</p></div>
+			@for(c <- reviews) { 
+				<p>@c.comment</p>
+			}
+		</div>
+	}
+}

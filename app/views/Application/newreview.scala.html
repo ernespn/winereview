@@ -5,11 +5,28 @@
 		<div class="error">@error</div>
 	}
 	
-	<form method="post" action="@action(controllers.Application.postreview())" enctype="multipart/form-data" id="reviewForm"> 
+	<form method="post" action="@action(controllers.Application.postreview())" enctype="multipart/form-data" id="reviewForm" class="form-stacked">
 		<input type="hidden" id="reviewDrink" name="reviewDrink" value="@drink" />
-		<input type="text" id="reviewComment" name="reviewComment" />
-		<input type="file" id="reviewImage" name="reviewImage" />
-		<input type="submit" value="create review"/>
+		<div class="clearfix">	
+			<label for="reviewComment">Add your comment to this review!</label>
+			<input type="text" id="reviewComment" name="reviewComment" />
+		</div>
+		<div class="clearfix">
+			<label for="reviewRating">How good is</label>
+			<select name="reviewRating" id="reviewRating">
+			<option value="-1" ></option>
+			<option value="1">1 star</option>
+			<option value="2">2 stars</option>
+			<option value="3">3 stars</option>
+			<option value="4">4 stars</option>
+			<option value="5">5 stars</option>
+			</select>	
+		</div>
+		<div class="clearfix">
+			<label for="reviewImage">You can add a Picture if you wish</label>
+			<input type="file" id="reviewImage" name="reviewImage" />
+		</div>	
+		<input type="submit" class="btn primary" value="create review"/>
 	</form>
 	
 }

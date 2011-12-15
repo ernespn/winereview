@@ -2,19 +2,33 @@
 
 @main(title) {
 	@if(error != ""){
-		<div class="error">@error</div>
+	<div class="alert-message error"><p>@error</p></div>
 	}
+
+	<h2>Insert a new wine
+	<form method="post" action="@action(controllers.Application.postnewdrink())" enctype="multipart/form-data" id="drinkForm" class="form-stacked"> 
+		<div class="clearfix">
+			<label for="drinkName">Wine name</label>
+            		<div class="input">
+              			<input type="text" id="drinkName" name="drinkname" />
+            		</div>
+          	</div>
+		<div class="clearfix">
+			<label for="drinkImage">Upload an Image for this wine</label>
+            		<div class="input">
+              			<input type="file" id="drinkImage" name="drinkimage" />
+            		</div>
+          	</div>
+		
 	
-	<form method="post" action="@action(controllers.Application.postnewdrink())" enctype="multipart/form-data" id="drinkForm"> 
-		<input type="text" id="drinkName" name="drinkname" />
-		<input type="file" id="drinkImage" name="drinkimage" />
-		<input type="submit" value="create drink"/>
+		<input type="submit" class="btn primary" value="create wine"/>
 	</form>
 	
 	
 	@if(drink != null){
-		<h1>@drink.name</h1>
-		
+		<div class="alert-message success">
+			<p> Well done!! wine @drink.name added</p>
+		</div>
 		<img alt="image" src="@action(controllers.Application.getImage(drink.image.id))" />
 		
 	}
