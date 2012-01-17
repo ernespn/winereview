@@ -69,3 +69,11 @@ object Application extends Controller {
 	def getImage(id:Long) = new ByteArrayInputStream(Picture.findById(id).ImageContent.getBytes())
     
 }
+
+object WebServices extends Controller {
+        def lastAdded() = {
+                val list =  Drink.getLastN(3).toList.map( d => "<wine name=\"" +d.name + "\" dateCreated=\"" + d.date + "\"><Image src=\"/Image/" + d.image.id + "\" ></Image></wine>" )
+                val concatenated = list.reduceLeft((x1: String, x2: String) => x1 + x2)                
+                Xml("<wines>" + concatenated  + "</wines>")
+        }
+}

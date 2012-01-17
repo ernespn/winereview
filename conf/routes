@@ -12,6 +12,10 @@ GET		/newreview/{id}							Application.newreview
 POST	/postreview								Application.postreview
 GET		/search/{search}						Application.search
 GET		/search/?								Application.search
+GET	/image/{id}							Application.getImage
+
+# Webservices functions
+GET	/webservices/lastAdded						WebServices.lastAdded(format:'xml')
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

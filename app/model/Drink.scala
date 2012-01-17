@@ -27,7 +27,7 @@ class Drink extends Model{
 	}
 	
 	def getReviews():List[Review] = {
-	        return Model.all(classOf[Review]).filter("drink", this.id).order("-date").fetch().toList 
+	        return Model.all(classOf[Review]).filter("drink", this.id).order("-date").fetch()
 	}
 
         def getReviewsAverageRating():Int = {
@@ -52,8 +52,8 @@ object Drink extends Model {
 	        return Model.all(classOf[Drink]).order("-date").fetch(n) 
 	}
 	
-	def Search(term:String):List[Drink] = {
-	        return Model.all(classOf[Drink]).search(term+"*", "nameLower").fetch().toList;
+	def Search(term:String):java.util.List[Drink] = {
+	        return Model.all(classOf[Drink]).search(term+"*", "nameLower").fetch()
 	}
 
 }
